@@ -4,7 +4,7 @@ A Natural Language Processing (NLP) project that classifies news headlines as **
 
 **Hugging Face Model:** https://huggingface.co/satyame639291/sarcasm-distilbert
 
-**Live Demo:** *Add Streamlit Cloud link after deployment*
+**Live Demo:** https://news-headline-sarcasm-detector.onrender.com
 
 ---
 

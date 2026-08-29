@@ -4,8 +4,9 @@ A Natural Language Processing (NLP) project that classifies news headlines as **
 
 **Hugging Face Model:** https://huggingface.co/satyame639291/sarcasm-distilbert
 
----
+**Live Demo:** https://news-headline-sarcasm-detector.onrender.com
 
+---
 ## Project Overview
 
 Sarcasm detection is a challenging NLP task because sarcasm often depends on context rather than individual words. Traditional machine learning models struggle to capture these contextual relationships.
@@ -207,4 +208,8 @@ streamlit run app.py
 
 ## Author
 
+<<<<<<< HEAD
 Satyam — [GitHub](https://github.com/krskumarsatyam777-glitch) | [Hugging Face](https://huggingface.co/satyame639291)
+=======
+GitHub: https://github.com/krskumarsatyam777-glitch
+>>>>>>> f4452e77c6aea6cc1756581bb1209139aac37f6a

@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 from transformers import pipeline
 
 #page configuration
@@ -15,7 +16,8 @@ st.set_page_config(
 def load_model():
     return pipeline(
         "text-classification",
-        model="satyame639291/sarcasm-distilbert"
+        model="satyame639291/sarcasm-distilbert",
+        token=os.environ.get("HF_TOKEN")
     )
 
 classifier = load_model()
@@ -27,8 +29,6 @@ st.markdown(""" This app uses a fine-tuned DistilBRET model to determine
 whether a news headline is satirical or genuine news report.""")
 
 st.divider()
-
-st.subheader("Try a Sample Headline")
 
 st.subheader("Try a Sample Headline")
 
@@ -93,31 +93,18 @@ st.divider()
 
 #about model
 
-with st.expander("ℹ️ About this Model"):
+with st.expander("ℹ️ About this App"):
 
     st.markdown(
         """
-        ### Model
-    
-        - **Architecture:** Fine-tuned DistilBERT (`distilbert-base-uncased`)
-        - **Task:** News Headline Classification
-    
-        ### Dataset
-    
-        **News Headlines Dataset for Sarcasm Detection**
-    
-        - **Total Headlines:** 28,503
-        - **Satirical News:** The Onion
-        - **Genuine News:** HuffPost
-    
-        ### Performance
-    
-        | Model | Accuracy | F1-Score |
-        |:------|:---------:|:--------:|
-        | TF-IDF + Logistic Regression | **77.34%** | **0.7729** |
-        | Fine-tuned DistilBERT | **92.10%** | **0.9209** |
-        """)
+        This app detects whether a news headline is likely **satirical** (like The Onion) 
+        or **genuine** (like real news reporting), using a fine-tuned **DistilBERT** model.
 
-    st.markdown("---")
-    
-    
+        **How it works:** Enter any headline, or try one of the sample headlines above, 
+        and the model will classify it along with a confidence score.
+
+        **Note:** The model was trained on a specific dataset of headlines and may not 
+        generalize perfectly to all writing styles or topics outside its training data.
+
+        [View the full project, dataset details, and model comparison on GitHub →](https://github.com/krskumarsatyam777-glitch/News-headline-sarcasm-detector)
+        """)

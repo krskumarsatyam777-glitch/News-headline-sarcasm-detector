@@ -4,8 +4,6 @@ A Natural Language Processing (NLP) project that classifies news headlines as **
 
 **Hugging Face Model:** https://huggingface.co/satyame639291/sarcasm-distilbert
 
-**Live Demo:** *Add Streamlit Cloud link after deployment*
-
 ---
 
 ## Project Overview
@@ -124,23 +122,7 @@ The application allows users to:
 - Enter a custom news headline
 - Classify it as **Satirical** or **Genuine**
 - View the prediction confidence
-- Test the model using predefined sample headlines
-
----
-
-## Application Screenshots
-
-### Home Page
-
-```
-screenshots/home.png
-```
-
-### Prediction Example
-
-```
-screenshots/prediction.png
-```
+- Test the model using a set of predefined sample headlines
 
 ---
 
@@ -177,10 +159,12 @@ news-headline-sarcasm-detector/
 ├── notebook/
 │   └── news_headline_sarcasm_detector.ipynb
 │
-├── screenshots/
-
-
+└── screenshots/
+    ├── home.png
+    └── prediction.png
 ```
+
+> Note: the fine-tuned DistilBERT model itself is not stored in this repo — `app.py` loads it directly from the Hugging Face Hub (`satyame639291/sarcasm-distilbert`) at runtime.
 
 ---
 
@@ -221,5 +205,6 @@ streamlit run app.py
 
 ---
 
+## Author
 
-GitHub: https://github.com/krskumarsatyam777-glitch
+Satyam — [GitHub](https://github.com/krskumarsatyam777-glitch) | [Hugging Face](https://huggingface.co/satyame639291)

@@ -1,10 +1,10 @@
 # News Headline Sarcasm Detection using DistilBERT
 
-A Natural Language Processing (NLP) project that classifies news headlines as **Satirical** or **Genuine** using a fine-tuned **DistilBERT** transformer model. The project also includes a **TF-IDF + Logistic Regression** baseline for performance comparison and an interactive **Streamlit** web application for real-time inference.
+A Natural Language Processing (NLP) project that classifies news headlines as **Satirical** or **Genuine** using a fine-tuned **DistilBERT** transformer model. The project also includes a **TF-IDF + Logistic Regression** baseline for performance comparison and an interactive **Gradio** web application for real-time inference.
 
 **Hugging Face Model:** https://huggingface.co/satyame639291/sarcasm-distilbert
 
-**Live Demo:** https://news-headline-sarcasm-detector.onrender.com
+**Live Demo:** https://huggingface.co/spaces/satyame639291/news_headline_scarcasm_detector
 
 ---
 ## Project Overview
@@ -16,7 +16,7 @@ This project compares:
 - **TF-IDF + Logistic Regression** (Classical NLP Baseline)
 - **Fine-tuned DistilBERT** (Transformer-based Deep Learning)
 
-The fine-tuned DistilBERT model is deployed through a Streamlit application, allowing users to classify custom news headlines in real time.
+The fine-tuned DistilBERT model is deployed through a Gradio application on Hugging Face Spaces, allowing users to classify custom news headlines in real time.
 
 ---
 
@@ -48,6 +48,8 @@ The notebook includes:
 - Word clouds
 - Punctuation usage analysis
 - Source domain analysis
+
+All EDA plots are available in [`images/eda/`](images/eda/), with full explanations in the [notebook](notebook/news_headline_sarcasm_detector.ipynb).
 
 ---
 
@@ -88,7 +90,7 @@ Fine-tune DistilBERT
 Model Evaluation
    │
    ▼
-Deploy with Streamlit
+Deploy with Gradio on Hugging Face Spaces
 ```
 
 ---
@@ -116,7 +118,7 @@ Deploy with Streamlit
 
 ---
 
-## Streamlit Application
+## Application
 
 The application allows users to:
 
@@ -125,12 +127,14 @@ The application allows users to:
 - View the prediction confidence
 - Test the model using a set of predefined sample headlines
 
+App screenshots are available in [`images/ui_demo/`](images/ui_demo/).
+
 ---
 
 ## Technologies Used
 
 - Python
-- Streamlit
+- Gradio
 - Hugging Face Transformers
 - Hugging Face Datasets
 - Hugging Face Evaluate
@@ -160,9 +164,9 @@ news-headline-sarcasm-detector/
 ├── notebook/
 │   └── news_headline_sarcasm_detector.ipynb
 │
-└── screenshots/
-    ├── home.png
-    └── prediction.png
+└── images/
+    ├── eda/
+    └── ui_demo/
 ```
 
 > Note: the fine-tuned DistilBERT model itself is not stored in this repo — `app.py` loads it directly from the Hugging Face Hub (`satyame639291/sarcasm-distilbert`) at runtime.
@@ -189,10 +193,10 @@ Install the required dependencies
 pip install -r requirements.txt
 ```
 
-Run the Streamlit application
+Run the Gradio application
 
 ```bash
-streamlit run app.py
+python app.py
 ```
 
 ---
@@ -208,8 +212,4 @@ streamlit run app.py
 
 ## Author
 
-<<<<<<< HEAD
 Satyam — [GitHub](https://github.com/krskumarsatyam777-glitch) | [Hugging Face](https://huggingface.co/satyame639291)
-=======
-GitHub: https://github.com/krskumarsatyam777-glitch
->>>>>>> f4452e77c6aea6cc1756581bb1209139aac37f6a

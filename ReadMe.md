@@ -49,7 +49,7 @@ The notebook includes:
 - Punctuation usage analysis
 - Source domain analysis
 
-All EDA plots are available in [`images/eda/`](images/eda/), with full explanations in the [notebook](notebook/news_headline_sarcasm_detector.ipynb).
+All EDA plots are available in [`images/eda/`](images/eda/), with full explanations in the [notebook](notebook/news%20headline%20sarcasm%20detector.ipynb).
 
 ---
 
@@ -162,7 +162,7 @@ news-headline-sarcasm-detector/
 │   └── SarcasmDetect.json
 │
 ├── notebook/
-│   └── news_headline_sarcasm_detector.ipynb
+│   └── news headline sarcasm detector.ipynb
 │
 └── images/
     ├── eda/

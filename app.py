@@ -1,110 +1,81 @@
-import streamlit as st
-import os
+import spaces
+import gradio as gr
 from transformers import pipeline
 
-#page configuration
-
-st.set_page_config(
-    page_title="News Headline Sarcasm Detection",
-    page_icon="🗞️",
-    layout="centered"
+# load fine-tuned DistilBERT model
+classifier = pipeline(
+    "text-classification",
+    model="satyame639291/sarcasm-distilbert"
 )
 
-# load fine-tuned DistilBRET model
-
-@st.cache_resource
-def load_model():
-    return pipeline(
-        "text-classification",
-        model="satyame639291/sarcasm-distilbert",
-        token=os.environ.get("HF_TOKEN")
-    )
-
-classifier = load_model()
-
-# App title
-
-st.title("News Headline Sarcasm Detection")
-st.markdown(""" This app uses a fine-tuned DistilBRET model to determine
-whether a news headline is satirical or genuine news report.""")
-
-st.divider()
-
-st.subheader("Try a Sample Headline")
-
+# sample headlines
 examples = [
     "Shocking, Usain bolt realisies he can use legs for walking",
     "Increasing temperature is a sign for global warming",
     "ford develops new suv that runs purely on gasoline",
     "how to live to be 110"
 ]
-
-cols = st.columns(2)
-for i,example in enumerate(examples):
-    if cols[i%2].button(example,use_container_width=True):
-        st.session_state["headline"] = example
-
-        st.divider()
-
-#user unput
-
-headline = st.text_input(
-    "Enter a News Headline",
-value=st.session_state.get("headline",""),
-placeholder="Type the news headline here"
-)
-
-#prediction
-
-if st.button("🔍 Analyze Headline", type="primary", use_container_width =True):
-
+@spaces.GPU
+def predict(headline):
     if not headline.strip():
-        st.warning("Please enter a news headline")
+        return "⚠️ Please enter a news headline"
 
+    result = classifier(headline)[0]
+    label = result["label"]
+    confidence = result["score"]
+
+    if label == "Sarcastic":
+        return (
+            f"🎭 **Satirical News Headline**\n\n"
+            f"**Confidence:** {confidence:.2%}\n\n"
+            f"The model predicts that this headline resembles **sarcastic news**, "
+            f"similar to articles published by **The Onion**."
+        )
     else:
-        with st.spinner("Analyzing..."):
-            result = classifier(headline)[0]
-            label = result["label"]
-            confidence = result["score"]
+        return (
+            f"📰 **Genuine News Headline**\n\n"
+            f"**Confidence:** {confidence:.2%}\n\n"
+            f"The model predicts that this headline resembles **genuine news reporting**, "
+            f"similar to articles published by **HuffPost**."
+        )
 
-            st.divider()
-            st.subheader("Prediction")
+with gr.Blocks(title="News Headline Sarcasm Detection") as demo:
+    gr.Markdown("# 🗞️ News Headline Sarcasm Detection")
+    gr.Markdown(
+        "This app uses a fine-tuned DistilBERT model to determine whether a "
+        "news headline is satirical or a genuine news report."
+    )
 
-            if label == "Sarcastic":
-                st.error("🎭 **Satirical News Headline**")
-                st.write(f"**Confidence:** {confidence:.2%}")
-                st.progress(confidence)
+    headline_input = gr.Textbox(
+        label="Enter a News Headline",
+        placeholder="Type the news headline here"
+    )
 
-                st.markdown(""" the model predicts that this 
-                headline resembles **sarcastic news**, similar to 
-                articles published by **The onion**""")
+    gr.Examples(
+        examples=examples,
+        inputs=headline_input,
+        label="Try a Sample Headline"
+    )
 
-            else:
-                st.success("📰 **Genuine News Headline**")
-                st.write(f"**Confidence:** {confidence:.2%}")
-                st.progress(confidence)
+    analyze_btn = gr.Button("🔍 Analyze Headline", variant="primary")
+    output = gr.Markdown()
 
-                st.markdown("""
-                The model predicts that this headline resembles **genuine news reporting**,
-                similar to articles published by **HuffPost**.
-                """)
+    analyze_btn.click(fn=predict, inputs=headline_input, outputs=output)
 
-st.divider()
+    with gr.Accordion("ℹ️ About this App", open=False):
+        gr.Markdown(
+            """
+            This app detects whether a news headline is likely **satirical** (like The Onion)
+            or **genuine** (like real news reporting), using a fine-tuned **DistilBERT** model.
 
-#about model
+            **How it works:** Enter any headline, or try one of the sample headlines above,
+            and the model will classify it along with a confidence score.
 
-with st.expander("ℹ️ About this App"):
+            **Note:** The model was trained on a specific dataset of headlines and may not
+            generalize perfectly to all writing styles or topics outside its training data.
 
-    st.markdown(
-        """
-        This app detects whether a news headline is likely **satirical** (like The Onion) 
-        or **genuine** (like real news reporting), using a fine-tuned **DistilBERT** model.
+            [View the full project, dataset details, and model comparison on GitHub →](https://github.com/krskumarsatyam777-glitch/News-headline-sarcasm-detector)
+            """
+        )
 
-        **How it works:** Enter any headline, or try one of the sample headlines above, 
-        and the model will classify it along with a confidence score.
-
-        **Note:** The model was trained on a specific dataset of headlines and may not 
-        generalize perfectly to all writing styles or topics outside its training data.
-
-        [View the full project, dataset details, and model comparison on GitHub →](https://github.com/krskumarsatyam777-glitch/News-headline-sarcasm-detector)
-        """)
+demo.launch()

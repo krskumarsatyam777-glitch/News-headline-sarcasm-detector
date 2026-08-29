@@ -29,14 +29,12 @@ def predict(headline):
             f"🎭 **Satirical News Headline**\n\n"
             f"**Confidence:** {confidence:.2%}\n\n"
             f"The model predicts that this headline resembles **sarcastic news**, "
-            f"similar to articles published by **The Onion**."
         )
     else:
         return (
             f"📰 **Genuine News Headline**\n\n"
             f"**Confidence:** {confidence:.2%}\n\n"
             f"The model predicts that this headline resembles **genuine news reporting**, "
-            f"similar to articles published by **HuffPost**."
         )
 
 with gr.Blocks(title="News Headline Sarcasm Detection") as demo:

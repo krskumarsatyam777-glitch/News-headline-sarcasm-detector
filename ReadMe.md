@@ -1,6 +1,6 @@
 # News Headline Sarcasm Detection using DistilBERT
 
-A Natural Language Processing (NLP) project that classifies news headlines as **Satirical** or **Genuine** using a fine-tuned **DistilBERT** transformer model. The project also includes a **TF-IDF + Logistic Regression** baseline for performance comparison and an interactive **Gradio** web application for real-time inference.
+A Natural Language Processing (NLP) project that classifies news headlines as **Satirical** or **Genuine** using a fine-tuned **DistilBERT** transformer model. The project also includes a **TF-IDF + Logistic Regression** baseline (default and tuned) for performance comparison and an interactive **Gradio** web application for real-time inference.
 
 **Hugging Face Model:** https://huggingface.co/satyame639291/sarcasm-distilbert
 
@@ -13,7 +13,8 @@ Sarcasm detection is a challenging NLP task because sarcasm often depends on con
 
 This project compares:
 
-- **TF-IDF + Logistic Regression** (Classical NLP Baseline)
+- **TF-IDF + Logistic Regression** (default, unigram features)
+- **TF-IDF + Logistic Regression** (tuned, unigram + bigram features)
 - **Fine-tuned DistilBERT** (Transformer-based Deep Learning)
 
 The fine-tuned DistilBERT model is deployed through a Gradio application on Hugging Face Spaces, allowing users to classify custom news headlines in real time.
@@ -49,7 +50,7 @@ The notebook includes:
 - Punctuation usage analysis
 - Source domain analysis
 
-All EDA plots are available in [`images/eda/`](images/eda/), with full explanations in the [notebook](notebook/news%20headline%20sarcasm%20detector.ipynb).
+All EDA plots are available in [`images/eda/`](images/eda/), with full explanations in the [notebook](notebook/news_headline_sarcasm_detector.ipynb).
 
 ---
 
@@ -57,8 +58,13 @@ All EDA plots are available in [`images/eda/`](images/eda/), with full explanati
 
 ### Baseline Model
 
-- TF-IDF Vectorization (`max_features=5000`)
-- Logistic Regression
+- TF-IDF Vectorization (`max_features=5000`, unigrams)
+- Logistic Regression with default hyperparameters
+
+### Tuned Baseline
+
+- TF-IDF Vectorization extended to unigrams + bigrams (`ngram_range=(1,2)`)
+- Logistic Regression with `C` tuned on a held-out validation set (best value: `C=2.5`)
 
 ### Deep Learning Model
 
@@ -69,6 +75,7 @@ All EDA plots are available in [`images/eda/`](images/eda/), with full explanati
   - Epochs: 3
   - Learning Rate: 2e-5
   - Batch Size: 32
+  - Best checkpoint (epoch 2) selected via validation F1
 
 ---
 
@@ -82,6 +89,9 @@ Exploratory Data Analysis
    │
    ▼
 TF-IDF + Logistic Regression (Baseline)
+   │
+   ▼
+TF-IDF (Unigram + Bigram) + Tuned Logistic Regression
    │
    ▼
 Fine-tune DistilBERT
@@ -99,13 +109,16 @@ Deploy with Gradio on Hugging Face Spaces
 
 | Model | Accuracy | Precision | Recall | F1 Score |
 |--------|:--------:|:---------:|:------:|:--------:|
-| TF-IDF + Logistic Regression | **77.34%** | **0.7736** | **0.7734** | **0.7729** |
-| Fine-tuned DistilBERT | **92.10%** | **0.9210** | **0.9210** | **0.9209** |
+| TF-IDF + Logistic Regression (default) | **77.34%** | **0.7736** | **0.7734** | **0.7729** |
+| TF-IDF + Logistic Regression (tuned) | **77.39%** | **0.7738** | **0.7739** | **0.7736** |
+| Fine-tuned DistilBERT | **92.00%** | **0.9201** | **0.9200** | **0.9200** |
 
 ### Key Observations
 
-- Fine-tuned DistilBERT significantly outperformed the TF-IDF + Logistic Regression baseline.
-- Contextual language understanding enabled DistilBERT to better identify satirical writing patterns.
+- Extending TF-IDF to unigrams + bigrams and tuning Logistic Regression's `C` on a validation set gave a negligible improvement over the default baseline (77.34% → 77.39%), indicating that richer n-grams and regularization tuning have limited headroom for this task with a purely word-frequency-based approach.
+- Fine-tuned DistilBERT significantly outperformed both Logistic Regression variants, improving accuracy by roughly 15 percentage points.
+- Contextual language understanding enabled DistilBERT to better identify satirical writing patterns that TF-IDF-based features cannot capture.
+- Error analysis showed DistilBERT still struggles most when sarcasm depends on knowledge of a public figure's reputation or cultural context rather than anything explicit in the text.
 - DistilBERT was selected over the full BERT model because it offers a substantially smaller model size with minimal performance loss, making it more suitable for deployment.
 
 ---
@@ -114,7 +127,7 @@ Deploy with Gradio on Hugging Face Spaces
 
 - The model was trained specifically on **The Onion** and **HuffPost** headlines, so performance may decrease on sarcasm found in conversations, social media posts, reviews, or other domains.
 - Labels are derived from the publication source rather than human annotation, meaning the model may partially learn publication-specific writing style.
-- Subtle or deadpan sarcasm without obvious contextual cues remains challenging to detect.
+- Subtle or deadpan sarcasm without obvious contextual cues remains challenging to detect, particularly when it depends on knowledge external to the headline text itself (e.g. a public figure's reputation).
 
 ---
 
@@ -162,7 +175,7 @@ news-headline-sarcasm-detector/
 │   └── SarcasmDetect.json
 │
 ├── notebook/
-│   └── news headline sarcasm detector.ipynb
+│   └── news_headline_sarcasm_detector.ipynb
 │
 └── images/
     ├── eda/
@@ -203,7 +216,7 @@ python app.py
 
 ## Future Improvements
 
-- Train the model on a larger and more diverse sarcasm dataset to improve generalization across different writing styles and domains.
+- Train the model on a larger and more diverse sarcasm dataset to improve generalization across different writing styles, domains, and public figures/cultural references.
 - Extend the model to detect sarcasm in social media posts, product reviews, and conversational text.
 - Evaluate other transformer architectures such as RoBERTa and DeBERTa for performance comparison.
 - Add attention visualization or explainability techniques to better interpret model predictions.

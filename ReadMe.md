@@ -6,6 +6,10 @@ A Natural Language Processing (NLP) project that classifies news headlines as **
 
 **Live Demo:** https://huggingface.co/spaces/satyame639291/news_headline_scarcasm_detector
 
+> **Note:** Hugging Face recently restricted free-tier hosting for Gradio Spaces, and this Space is currently affected by an account-level restart issue on their end that has been reported to Hugging Face. If the demo link shows a sleeping or error screen, see the demo below, or run the app locally using the instructions in [Installation](#installation).
+
+![Demo](images/ui_demo/demo.gif)
+
 ---
 ## Project Overview
 
@@ -180,6 +184,7 @@ news-headline-sarcasm-detector/
 └── images/
     ├── eda/
     └── ui_demo/
+        └── demo.gif
 ```
 
 > Note: the fine-tuned DistilBERT model itself is not stored in this repo — `app.py` loads it directly from the Hugging Face Hub (`satyame639291/sarcasm-distilbert`) at runtime.
@@ -187,6 +192,8 @@ news-headline-sarcasm-detector/
 ---
 
 ## Installation
+
+If the [live demo](https://huggingface.co/spaces/satyame639291/news_headline_scarcasm_detector) is unavailable, the app can be run locally in a few steps:
 
 Clone the repository
 
@@ -211,6 +218,8 @@ Run the Gradio application
 ```bash
 python app.py
 ```
+
+The app will start a local server (typically at `http://127.0.0.1:7860`) — open that URL in a browser to use it.
 
 ---
 
